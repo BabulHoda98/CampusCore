@@ -1,11 +1,43 @@
-// src/components/CampusCore.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CampusCore = () => {
   const [activeTab, setActiveTab] = useState('login');
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  const navigate = useNavigate();
   
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setShowLoginSuccess(true);
+    setTimeout(() => setShowLoginSuccess(false), 4000); // Show for 2 seconds
+    // Add your login validation logic here
+    // If login is successful:
+    navigate('/admin-dashboard');
+  };
+
+  const handleRegisterLogin = (e) => {
+    e.preventDefault();
+    setShowLoginSuccess(true);
+    setTimeout(() => setShowLoginSuccess(false), 2000); // Show for 2 seconds
+    // You can add registration logic here
+  };
+
   return (
-    <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden relative">
+      {/* Login Success Message */}
+      {showLoginSuccess && (
+        // <div className="fixed top-6 right-6 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
+        //   Login Successful
+        // </div>
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 bg-green-600 text-white px-5 py-3 rounded-xl shadow-xl animate-slide-in-down transition-all duration-500">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+  </svg>
+  <span className="font-semibold tracking-wide">Login Successful</span>
+</div>
+
+      )}
+      
       <div className="md:flex">
         {/* Left Panel - Welcome Section */}
         <div className="bg-gradient-to-br from-blue-600 to-indigo-800 p-8 text-white md:w-2/5 flex flex-col">
@@ -53,7 +85,7 @@ const CampusCore = () => {
             <div className="animate-fadeIn">
               <h3 className="text-xl font-semibold mb-6 text-gray-800">User Login</h3>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">User Id</label>
                   <input 
@@ -89,7 +121,7 @@ const CampusCore = () => {
             <div className="animate-fadeIn">
               <h3 className="text-xl font-semibold mb-6 text-gray-800">Register</h3>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleRegisterLogin}>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">User Id</label>
                   <input 

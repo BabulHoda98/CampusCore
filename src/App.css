@@ -1,5 +1,4 @@
-/* src/index.css */
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -25,4 +24,4 @@ body {
 input:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
+} */
