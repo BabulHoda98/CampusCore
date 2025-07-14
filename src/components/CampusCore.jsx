@@ -6,6 +6,9 @@ const CampusCore = () => {
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const [showLogoutSuccess, setShowLogoutSuccess] = useState(false); // New state for logout success
   const [isLoggedIn, setIsLoggedIn] = useState(false); // New state to track login status
+  const [loginData, setLoginData] = useState({ userId: '', password: '' });
+  const [registerData, setRegisterData] = useState({ userId: '', password: '', confirmUserId: '', confirmPassword: '' });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   // Simulate checking login status (e.g., from local storage)
@@ -18,29 +21,57 @@ const CampusCore = () => {
     }
   }, []);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // In a real application, you'd send credentials to a server
-    // and store the token/user info upon successful authentication.
-    console.log('Attempting login...');
-    // Simulate successful login
-    localStorage.setItem('userToken', 'dummy-token-123'); // Store a dummy token
+    setError('');
+    // Basic validation
+    if (!loginData.userId || !loginData.password) {
+      setError('User ID and Password are required.');
+      return;
+    }
+    if (loginData.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    // TODO: Send credentials securely to backend API using HTTPS
+    // Example:
+    // const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify(loginData) });
+    // if (response.ok) { /* handle login */ }
+    // For demo, simulate login
     setIsLoggedIn(true);
     setShowLoginSuccess(true);
-    setTimeout(() => setShowLoginSuccess(false), 2000); // Show for 2 seconds
-    navigate('/admin-dashboard'); // Redirect to dashboard
+    setTimeout(() => setShowLoginSuccess(false), 2000);
+    navigate('/admin-dashboard');
   };
 
-  const handleRegisterLogin = (e) => {
+  const handleRegisterLogin = async (e) => {
     e.preventDefault();
-    // In a real application, you'd send registration data to a server.
-    console.log('Attempting registration...');
-    // After successful registration, you might automatically log them in
-    // or direct them to the login page. For this example, we'll just show success.
-    setShowLoginSuccess(true); // Reusing for register success as well
-    setTimeout(() => setShowLoginSuccess(false), 2000); // Show for 2 seconds
-    // You might want to automatically switch to the login tab after successful registration
-    // setActiveTab('login');
+    setError('');
+    // Basic validation
+    if (!registerData.userId || !registerData.password || !registerData.confirmUserId || !registerData.confirmPassword) {
+      setError('All fields are required.');
+      return;
+    }
+    if (registerData.userId !== registerData.confirmUserId) {
+      setError('User IDs do not match.');
+      return;
+    }
+    if (registerData.password !== registerData.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+    if (registerData.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    // TODO: Send registration data securely to backend API using HTTPS
+    // Example:
+    // const response = await fetch('/api/register', { method: 'POST', body: JSON.stringify(registerData) });
+    // if (response.ok) { /* handle registration */ }
+    setShowLoginSuccess(true);
+    setTimeout(() => setShowLoginSuccess(false), 2000);
+    // Optionally switch to login tab
+    setActiveTab('login');
   };
 
   const handleLogout = () => {
@@ -65,6 +96,12 @@ const CampusCore = () => {
       {showLogoutSuccess && (
         <div className="fixed top-6 right-6 z-50 bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
           Logged Out Successfully
+        </div>
+      )}
+
+      {error && (
+        <div className="fixed top-20 right-6 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
+          {error}
         </div>
       )}
 
@@ -145,8 +182,11 @@ const CampusCore = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">User Id</label>
                       <input
                         type="text"
+                        value={loginData.userId}
+                        onChange={e => setLoginData({ ...loginData, userId: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your user ID"
+                        required
                       />
                     </div>
 
@@ -154,8 +194,11 @@ const CampusCore = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                       <input
                         type="password"
+                        value={loginData.password}
+                        onChange={e => setLoginData({ ...loginData, password: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your password"
+                        required
                       />
                     </div>
 
@@ -181,8 +224,11 @@ const CampusCore = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">User Id</label>
                       <input
                         type="text"
+                        value={registerData.userId}
+                        onChange={e => setRegisterData({ ...registerData, userId: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Create your user ID"
+                        required
                       />
                     </div>
 
@@ -190,8 +236,11 @@ const CampusCore = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                       <input
                         type="password"
+                        value={registerData.password}
+                        onChange={e => setRegisterData({ ...registerData, password: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Create a password"
+                        required
                       />
                     </div>
 
@@ -199,8 +248,11 @@ const CampusCore = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Confirm User Id</label>
                       <input
                         type="text"
+                        value={registerData.confirmUserId}
+                        onChange={e => setRegisterData({ ...registerData, confirmUserId: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Re-enter your user ID"
+                        required
                       />
                     </div>
 
@@ -208,8 +260,11 @@ const CampusCore = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
                       <input
                         type="password"
+                        value={registerData.confirmPassword}
+                        onChange={e => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Re-enter your password"
+                        required
                       />
                     </div>
 

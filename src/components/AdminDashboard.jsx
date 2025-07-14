@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, Users, FileText, Briefcase, User, Users2, 
   CreditCard, Settings, HelpCircle, LogOut, Search, Bell, 
   UserCircle, CalendarDays, BarChart3, DollarSign, Building, 
   ClipboardList, TrendingUp, Plus, Edit, Trash, X, Menu, 
   ChevronDown, ChevronUp, Filter, ArrowUpDown, MoreVertical,
-  ShoppingCart, PieChart, BarChart2
+  ShoppingCart, PieChart, BarChart2, Shield, Lock, Activity
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const [currentView, setCurrentView] = useState('dashboard');
@@ -41,8 +42,19 @@ const AdminDashboard = () => {
     subscription: 'All'
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [sessionTimeout, setSessionTimeout] = useState(false);
+  const [idleTime, setIdleTime] = useState(0);
+  const [securityStatus, setSecurityStatus] = useState({
+    lastLogin: 'Today at 09:24 AM',
+    loginLocation: 'New York, USA',
+    loginDevice: 'MacBook Pro (Chrome)',
+    sessionDuration: '1h 45m'
+  });
+  
   const itemsPerPage = 5;
-
+  const navigate = useNavigate();
+  
   // Enhanced stats with real data
   const stats = [
     { title: 'Organisations', value: organizations.length, icon: <Building size={24} />, color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300', change: '+12%' },
@@ -104,6 +116,49 @@ const AdminDashboard = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Session timeout detection
+  useEffect(() => {
+    let inactivityTimer;
+    let sessionTimer;
+    
+    const resetTimers = () => {
+      clearTimeout(inactivityTimer);
+      clearTimeout(sessionTimer);
+      setIdleTime(0);
+      
+      // Inactivity timeout (15 minutes)
+      inactivityTimer = setTimeout(() => {
+        setSessionTimeout(true);
+      }, 15 * 60 * 1000); // 15 minutes
+      
+      // Session timeout (1 hour)
+      sessionTimer = setTimeout(() => {
+        setSessionTimeout(true);
+      }, 60 * 60 * 1000); // 60 minutes
+    };
+    
+    // Event listeners for user activity
+    const handleUserActivity = () => {
+      resetTimers();
+    };
+    
+    window.addEventListener('mousemove', handleUserActivity);
+    window.addEventListener('keypress', handleUserActivity);
+    window.addEventListener('click', handleUserActivity);
+    window.addEventListener('scroll', handleUserActivity);
+    
+    resetTimers();
+    
+    return () => {
+      clearTimeout(inactivityTimer);
+      clearTimeout(sessionTimer);
+      window.removeEventListener('mousemove', handleUserActivity);
+      window.removeEventListener('keypress', handleUserActivity);
+      window.removeEventListener('click', handleUserActivity);
+      window.removeEventListener('scroll', handleUserActivity);
+    };
+  }, []);
+  
   // Organization CRUD Operations
   const handleCreateOrg = () => {
     setCurrentOrg(null);
@@ -230,6 +285,29 @@ const AdminDashboard = () => {
     pagination: darkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'
   };
 
+  // Handle logout
+  const handleLogout = () => {
+    // Clear any session data (e.g., tokens)
+    // localStorage.removeItem('userToken'); // Uncomment if using token
+    // Reset state if needed
+    setShowLogoutModal(false);
+    setSessionTimeout(false);
+    // Redirect to login page
+    navigate('/');
+  };
+
+  // Extend session
+  const extendSession = () => {
+    setSessionTimeout(false);
+    // Reset timers by simulating user activity
+    const event = new MouseEvent('mousemove', {
+      view: window,
+      bubbles: true,
+      cancelable: true
+    });
+    document.dispatchEvent(event);
+  };
+
   // Chart components
   const RevenueBarChart = () => {
     const maxValue = Math.max(...revenueData.map(d => Math.max(d.revenue, d.expenses)));
@@ -241,7 +319,7 @@ const AdminDashboard = () => {
             <div key={index} className="flex flex-col items-center flex-1">
               <div className="flex items-end justify-center space-x-1 w-full">
                 <div 
-                  className="w-3/5 bg-indigo-500 rounded-t hover:bg-indigo-600 transition-colors duration-200 border border-red-500 "
+                  className="w-3/5 bg-indigo-500 rounded-t hover:bg-indigo-600 transition-colors duration-200"
                   style={{ height: `${(item.revenue / maxValue) * 100}%` }}
                   title={`Revenue: $${item.revenue}`}
                 ></div>
@@ -397,7 +475,10 @@ const AdminDashboard = () => {
         </nav>
 
         <div className="mt-auto">
-          <button className="w-full flex items-center p-3 rounded-lg text-slate-200 hover:bg-slate-700 hover:text-rose-200 transition-colors duration-200">
+          <button 
+            onClick={() => setShowLogoutModal(true)}
+            className="w-full flex items-center p-3 rounded-lg text-slate-200 hover:bg-slate-700 hover:text-rose-200 transition-colors duration-200"
+          >
             <LogOut size={20} />
             <span className="ml-3">Logout Account</span>
           </button>
@@ -482,6 +563,28 @@ const AdminDashboard = () => {
               <Search size={18} className="absolute left-3 top-2.5 text-slate-400" />
             </div>
           )}
+
+          {/* Security status banner */}
+          <div className={`mb-6 p-4 rounded-lg border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-blue-50 border-blue-200'}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Shield size={20} className="text-blue-500 mr-3" />
+                <div>
+                  <p className="font-medium text-slate-800 dark:text-slate-100">Security Status: Active</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Last login: {securityStatus.lastLogin} from {securityStatus.loginLocation}
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowLogoutModal(true)}
+                className="flex items-center text-sm text-rose-600 hover:text-rose-800 dark:text-rose-400 dark:hover:text-rose-300"
+              >
+                <LogOut size={16} className="mr-1" />
+                Secure Logout
+              </button>
+            </div>
+          </div>
 
           {currentView === 'dashboard' ? (
             <>
@@ -1040,6 +1143,104 @@ const AdminDashboard = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className={`rounded-xl shadow-xl w-full max-w-md ${themeClasses.card}`}>
+            <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center">
+                <LogOut size={20} className="mr-2 text-indigo-500" />
+                Confirm Logout
+              </h3>
+              <button 
+                onClick={() => setShowLogoutModal(false)}
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center">
+                  <LogOut size={32} className="text-rose-600" />
+                </div>
+              </div>
+              
+              <p className="text-center text-slate-600 dark:text-slate-300">
+                Are you sure you want to log out of your account?
+              </p>
+              
+              <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowLogoutModal(false)}
+                  className="px-6 py-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-6 py-3 rounded-lg bg-rose-600 text-white hover:bg-rose-700 flex items-center justify-center"
+                >
+                  <LogOut size={18} className="mr-2" />
+                  Yes, Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Session Timeout Modal */}
+      {sessionTimeout && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className={`rounded-xl shadow-xl w-full max-w-md ${themeClasses.card}`}>
+            <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center">
+                <Lock size={20} className="mr-2 text-amber-500" />
+                Session Expiring
+              </h3>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="flex items-center justify-center mb-4">
+                <div className="relative">
+                  <div className="w-24 h-24 rounded-full bg-amber-100 flex items-center justify-center">
+                    <Activity size={40} className="text-amber-600" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-rose-500 flex items-center justify-center text-white font-bold">
+                    15
+                  </div>
+                </div>
+              </div>
+              
+              <p className="text-center text-slate-600 dark:text-slate-300">
+                Your session is about to expire due to inactivity. For security reasons, you'll be logged out in 15 seconds.
+              </p>
+              
+              <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-6 py-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                >
+                  Logout Now
+                </button>
+                <button
+                  type="button"
+                  onClick={extendSession}
+                  className="px-6 py-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+                >
+                  Stay Logged In
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
