@@ -1,0 +1,79 @@
+Organization Management (CRUD Operations)
+Create Organization
+Add new institutions with all details
+Auto-generate credentials
+Set default 7-day free trial
+View Organization List
+Paginated table view
+Filter by status (active/inactive/trial)
+Sort by registration date, student count, etc.
+Update Organization
+Edit all details
+Reset credentials
+Delete Organization
+Permanent delete after confirmation
+
+*Super Admin Dashboard Features
+Organization Management	
+Active Organizations: List of currently active institutions
+Inactive Organizations: List of institutions not currently using the system
+Subscription Status:
+Subscription start date
+Subscription expiry date (highlight nearing/expired subscriptions)
+Total Organizations Count: Summary statistic
+Student Count per Organization: Shows how many students each institution has registered
+Other Dashboard Components
+About Us Section: Information about your software/service
+Subscription Plans Section:
+Features: Comparison of available plans
+Pricing: Cost structure for different plans
+FAQs: Common questions about subscriptions
+Plan Types:
+	Basic Plan (limited features)
+	Premium Plan (full features)
+Help & Support
+Contact information
+Ticketing system or support portal link
+Documentation/resources
+
+Enhanced Subscription Tracking
+Free Trial Management
+Automatic 7-day trial for new registrations
+Trial countdown timer in org dashboard
+Notifications when trial is ending (3 days, 1 day remaining)
+Communication Center
+Bulk Email System
+Select multiple organizations
+Send announcements, updates, policies
+Targeted Messaging
+Email specific organizations
+Track message status (sent/delivered/read)
+Attachment support
+Notification System
+Broadcast alerts to all organizations
+Priority tagging (urgent/normal)
+Read receipts
+Alert Messages
+System-wide announcements
+Subscription expiry warnings
+Maintenance notices
+Enhanced Registration Flow
+Registration Flow
+Organization Registration Page:
+Form fields for school/college details (name, address, contact info, admin details)
+Upon submission, system generates unique ID/password
+Credentials are emailed to the registered admin email
+Login System:
+Organizations login with provided credentials
+First login should prompt password change for security
+
+First Login Experience
+Reset Password
+Show trial countdown
+Display quick tutorial
+Offer support contact
+
+
+
+
+

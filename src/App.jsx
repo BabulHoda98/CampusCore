@@ -1,21 +1,20 @@
-// src/App.js
-import React from 'react';
-import CampusCore from './components/CampusCore';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminDashboard from './components/AdminDashboard';
-import './App.css';
+import { useLocation } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/admin-dashboard");
+
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 flex items-center justify-center">
-        <Routes>
-          <Route path="/" element={<CampusCore />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        </Routes>
+    <div className="flex">
+      {isDashboard && <Sidebar />}
+      <div className={isDashboard ? "flex-1" : "w-full"}>
+        <AppRoutes />
       </div>
-    </Router>
+    </div>
   );
 }
 
 export default App;
+

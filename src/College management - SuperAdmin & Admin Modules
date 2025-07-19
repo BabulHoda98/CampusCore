@@ -1,0 +1,111 @@
+---------------------------------Super Admin Dashboard Features---------------------------------
+Organization Management
+- Active Organizations: List of currently active institutions
+- Inactive Organizations: List of institutions not currently using the system
+- Subscription Status:
+ - Subscription start date
+ - Subscription expiry date (highlight nearing/expired subscriptions)
+- Total Organizations Count: Summary statistic
+- Student Count per Organization: Shows how many students each institution has registered
+
+Other Dashboard Components
+- About Us Section: Information about your software/service
+- Subscription Plans Section:
+ - Features: Comparison of available plans
+ - Pricing: Cost structure for different plans
+ - FAQs: Common questions about subscriptions
+ - Plan Types:
+ - Basic Plan (limited features)
+ - Premium Plan (full features)
+
+ -------------------Registration Flow------------------------
+
+ 1. Organization Registration Page:
+ - Form fields for school/college details (name, address, contact info, admin details)
+  - Upon submission, system generates unique ID/password
+ - Credentials are emailed to the regi
+ 2. Login System:
+ - Organizations login with provided credentials
+ - First login should prompt password change for security
+
+--------------------Admin Panel Modules----------------------
+
+User Management
+- Create / Edit / Delete Users
+- Assign Roles (Admin/Student)
+College Registration
+- Manage College Details
+- Add Departments / Courses
+Global Announcements
+- Post Announcements
+- Set Priority, Expiry Date
+Notifications
+- Real-time Notifications (to Students)
+Support Ticketing
+- View/Resolve Tickets
+- Ticket Status Management
+User Chats
+- One-to-One Messaging with Students
+Jobs
+- Post Jobs & Internships
+- Filter by Department
+Fees Management
+- Manage Fee Structure
+- Update Payment Status
+Reports
+- Analytics Reports
+- Exportable CSV/PDFs
+
+---------------------Academic Modules (Shared by Admin & Student)-----------------------------
+
+Course Management
+- Add/Update/Delete Courses
+- Assign Faculties
+Faculty Management
+- Add/Edit Faculty Members
+- Department Assignments
+Exam Management
+- Schedule Exams
+- Result Upload/Viewing
+Time Table Management
+- Weekly Time Tables
+- Faculty/Room Assignment
+Attendance Management
+- Mark/View Attendance
+- Student-wise Report
+Student Information
+- Student Profiles
+- Academic Records
+Fees Management
+- Payment History
+- Dues Tracking
+Library Management
+- Add Books
+- Issue/Return Management
+College Announcements
+- Event Notices
+- Circulars
+Reports
+- Generate Custom Reports
+- Attendance, Exam, Library, etc.
+
+-----------------------------Student Panel Modules-----------------------
+
+Course Enrollment
+- Browse & Register for Courses
+Exam Schedule
+- View Upcoming Exams
+Fee Payment
+- Online Payments
+- Receipts Download
+Library Catalog
+- Search Books
+- Track Issued Books
+Event Registration
+- Join College Events
+Job Listings
+- View Job/Internship Opportunities
+College Announcements
+- View Latest News & Notices
+User Chats
+- Chat with Admin
