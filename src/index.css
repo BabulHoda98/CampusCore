@@ -1,13 +1,13 @@
-src/index.css
+/* src/index.css */
 
 /* ✅ 1. Google Fonts import MUST be first */
-/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ✅ 2. Tailwind imports */
-/* @import "tailwindcss";
+@import "tailwindcss";
 @tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
 /* ✅ 3. Global styles */
 body {
