@@ -1,14 +1,4 @@
-// const StatCard = ({ title, value, color }) => {
-//   return (
-//     <div className={`p-6 rounded-lg shadow-md ${color}`}>
-//       <div className="text-sm font-semibold">{title}</div>
-//       <div className="text-2xl font-bold mt-2">{value}</div>
-//     </div>
-//   );
-// };
 
-// export default StatCard;
-// src/components/StatCard.jsx
 import React from 'react';
 
 const StatCard = ({ title, value, icon, change, changeType, description }) => {

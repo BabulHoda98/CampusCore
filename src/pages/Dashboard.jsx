@@ -81,15 +81,15 @@ const Dashboard = () => {
     <div className="bg-gray-50 min-h-screen ml-64">
       <Header />
 
-      <div className="px-6 py-4 max-w-7xl mx-auto">
+      <div className="px-6 py-2 max-w-7xl mx-auto">
         {/* Dashboard Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-sm text-gray-500 mt-1">Welcome back, Admin. Here's what's happening today.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+            {/* <p className="text-sm text-gray-500 mt-1">Welcome back, Admin. Here's what's happening today.</p> */}
           </div>
 
-          <div className="mt-4 md:mt-0 flex space-x-3 items-center">
+          <div className="mt-2 md:mt-0 flex space-x-3 items-center">
             <div className="relative">
               <select
                 value={timeRange}
@@ -114,7 +114,7 @@ const Dashboard = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-200 mb-6">
+        <div className="flex border-b border-gray-200 mb-2">
           {['overview', 'analytics', 'reports', 'settings'].map((tab) => (
             <button
               key={tab}
@@ -128,16 +128,18 @@ const Dashboard = () => {
         </div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {stats.map((stat, index) => (
             <StatCard key={index} {...stat} />
           ))}
         </div>
 
         {/* Charts Area */}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-0">
           <div className="lg:col-span-2 space-y-2">
             <SubscriptionOverview />
+            {/* <RecentlyJoined /> */}
 
             {/* Revenue Chart */}
             <div className="bg-white rounded-xl shadow-md overflow-hidden">
